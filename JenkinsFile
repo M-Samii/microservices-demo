@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        DOCKERHUB_REPO = "mahsamii"
+    }
+
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/M-Samii/microservices-demo.git'
+            }
+        }
+
+        stage('Build and Push Changed Services') {
+            steps {
+                script {
+                    // Get changed directories under src/
+                    def changedFiles = sh(
+                        script: "git diff --name-only HEAD~1 HEAD",
+                        returnStdout: true
+                    ).trim().split("\n")
+
+                    def changedServices = [] as Set
+
+                    for (file in changedFiles) {
+                        if (file.startsWith('src/')) {
+                            def parts = file.split('/')
+                            if (parts.length >= 2) {
+                                changedServices << parts[1]
+                            }
+                        }
+                    }
+
+                    if (changedServices.isEmpty()) {
+                        echo "✅ No services changed. Skipping build and push."
+                    } else {
+                        for (service in changedServices) {
+                            def imageName = "${env.DOCKERHUB_REPO}/${service.toLowerCase()}:latest"
+                            echo "🚀 Building and pushing ${imageName}"
+
+                            // Handle cartservice's nested Dockerfile
+                            def buildContext = (service == "cartservice") ? "src/cartservice/src" : "src/${service}"
+
+                            sh """
+                                docker build -t ${imageName} ${buildContext}
+                                echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
+                                docker push ${imageName}
+                                docker logout
+                            """
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "🧹 Cleaning up workspace"
+            cleanWs()
+        }
+    }
+}
