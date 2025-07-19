@@ -13,38 +13,52 @@ pipeline {
             }
         }
 
-        stage('Build and Push Changed Services') {
+        stage('Build, Scan, and Push Changed Services') {
             steps {
                 script {
-                    // Get changed directories under src/
+                    // Get changed files in the last commit
                     def changedFiles = sh(
                         script: "git diff --name-only HEAD~1 HEAD",
                         returnStdout: true
                     ).trim().split("\n")
 
-                    def changedServices = [] as Set
-
+                    // Identify unique services that were updated
+                    def services = []
                     for (file in changedFiles) {
-                        if (file.startsWith('src/')) {
-                            def parts = file.split('/')
+                        if (file.startsWith("src/")) {
+                            def parts = file.split("/")
                             if (parts.length >= 2) {
-                                changedServices << parts[1]
+                                def service = parts[1]
+                                if (!services.contains(service)) {
+                                    services.add(service)
+                                }
                             }
                         }
                     }
 
-                    if (changedServices.isEmpty()) {
-                        echo "✅ No services changed. Skipping build and push."
+                    if (services.size() == 0) {
+                        echo "✅ No services were changed in the last commit. Skipping build."
                     } else {
-                        for (service in changedServices) {
-                            def imageName = "${env.DOCKERHUB_REPO}/${service.toLowerCase()}:latest"
-                            echo "🚀 Building and pushing ${imageName}"
-
-                            // Handle cartservice's nested Dockerfile
+                        for (service in services) {
+                            // Determine build context based on service
                             def buildContext = (service == "cartservice") ? "src/cartservice/src" : "src/${service}"
+                            def imageName = "${DOCKERHUB_REPO}/${service.toLowerCase()}:latest"
+                            echo "🚀 Building and scanning ${imageName}"
 
+                            // Build image
                             sh """
                                 docker build -t ${imageName} ${buildContext}
+                            """
+
+                            // Run Trivy vulnerability scan using Docker
+                            echo "🔍 Running Trivy scan on ${imageName}"
+                            sh """
+                                docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 0 --severity HIGH,CRITICAL ${imageName}
+                                docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 1 --severity CRITICAL ${imageName}
+                            """
+
+                            // Push image
+                            sh """
                                 echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
                                 docker push ${imageName}
                                 docker logout
