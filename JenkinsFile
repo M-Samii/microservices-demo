@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKERHUB_REPO = "mahsamii"
-    }
+        SNYK_TOKEN = credentials('snyk-token')  
 
     stages {
         stage('Clone Repository') {
@@ -12,6 +12,49 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/M-Samii/microservices-demo.git'
             }
         }
+
+        stage('Secret Scan with TruffleHog') {
+            steps {
+                script {
+                    echo "🔑 Running TruffleHog to scan for secrets in the repository"
+                    def exitCode = sh(
+                        script: """
+                            docker run --rm -v \$(pwd):/repo trufflesecurity/trufflehog:latest filesystem /repo --fail
+                        """,
+                        returnStatus: true
+                    )
+
+                    if (exitCode != 0) {
+                        error "❌ TruffleHog detected secrets in the repository. Failing the build."
+                    } else {
+                        echo "✅ No secrets detected by TruffleHog."
+                    }
+                }
+            }
+        }
+
+    stage('Snyk Scan') {
+        steps {
+            script {
+                echo "🔍 Running Snyk to scan for vulnerabilities and license violations"
+    
+                withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
+                    def exitCode = sh(
+                        script: """
+                            docker run --rm -e SNYK_TOKEN=\$SNYK_TOKEN -v \$(pwd):/project snyk/snyk-cli:docker test --all-projects --severity-threshold=high --fail-on=all
+                        """,
+                        returnStatus: true
+                    )
+    
+                    if (exitCode != 0) {
+                        error "❌ Snyk detected vulnerabilities, license violations, or authentication issues. Failing the build."
+                    } else {
+                        echo "✅ No critical/high vulnerabilities or license issues detected by Snyk."
+                    }
+                }
+            }
+        }
+    }
 
         stage('Build, Scan, and Push Changed Services') {
             steps {
@@ -40,24 +83,20 @@ pipeline {
                         echo "✅ No services were changed in the last commit. Skipping build."
                     } else {
                         for (service in services) {
-                            // Determine build context based on service
                             def buildContext = (service == "cartservice") ? "src/cartservice/src" : "src/${service}"
                             def imageName = "${DOCKERHUB_REPO}/${service.toLowerCase()}:latest"
                             echo "🚀 Building and scanning ${imageName}"
 
-                            // Build image
                             sh """
                                 docker build -t ${imageName} ${buildContext}
                             """
 
-                            // Run Trivy vulnerability scan using Docker
                             echo "🔍 Running Trivy scan on ${imageName}"
                             sh """
                                 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 0 --severity HIGH,CRITICAL ${imageName}
                                 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 1 --severity CRITICAL ${imageName}
                             """
 
-                            // Push image
                             sh """
                                 echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
                                 docker push ${imageName}
