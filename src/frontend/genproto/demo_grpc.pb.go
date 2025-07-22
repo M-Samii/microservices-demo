@@ -1177,3 +1177,4 @@ var AdService_ServiceDesc = grpc.ServiceDesc{
 	Streams:  []grpc.StreamDesc{},
 	Metadata: "demo.proto",
 }
+//qwqw
