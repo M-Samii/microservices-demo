@@ -5,6 +5,8 @@ pipeline {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
         DOCKERHUB_REPO = "mahsamii"
         SNYK_TOKEN = credentials('snyk-token')
+        GCP_PROJECT_ID = "devops-project-465114" // replace with your project ID
+        COSIGN_KEY = "projects/devops-project-465114/locations/global/keyRings/my-keyring/cryptoKeys/cosign-key"
     }
 
     stages {
@@ -24,7 +26,6 @@ pipeline {
                         """,
                         returnStatus: true
                     )
-
                     if (exitCode != 0) {
                         error "❌ TruffleHog detected secrets in the repository. Failing the build."
                     } else {
@@ -40,11 +41,10 @@ pipeline {
                     echo "🔍 Running Snyk to scan for vulnerabilities and license violations"
                     def exitCode = sh(
                         script: """
-                            docker run --rm -e SNYK_TOKEN -v \$(pwd):/project snyk/snyk-cli:docker test --all-projects --severity-threshold=high --fail-on=all
+                            docker run --rm -e SNYK_TOKEN=${SNYK_TOKEN} -v \$(pwd):/project snyk/snyk-cli:docker test --all-projects --severity-threshold=high --fail-on=all
                         """,
                         returnStatus: true
                     )
-
                     if (exitCode != 0) {
                         error "❌ Snyk detected vulnerabilities, license violations, or authentication issues. Failing the build."
                     } else {
@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-        stage('Build, Scan, and Push Changed Services') {
+        stage('Build, Scan, Sign, and Push') {
             steps {
                 script {
                     def changedFiles = sh(
@@ -78,26 +78,43 @@ pipeline {
                     if (services.size() == 0) {
                         echo "✅ No services were changed in the last commit. Skipping build."
                     } else {
-                        for (service in services) {
-                            def buildContext = (service == "cartservice") ? "src/cartservice/src" : "src/${service}"
-                            def imageName = "${DOCKERHUB_REPO}/${service.toLowerCase()}:latest"
-                            echo "🚀 Building and scanning ${imageName}"
+                        echo "🛠️ Changed services to process: ${services}"
 
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials', usernameVariable: 'COSIGN_DOCKER_USERNAME', passwordVariable: 'COSIGN_PASSWORD')]) {
+                            
                             sh """
-                                docker build -t ${imageName} ${buildContext}
+                                echo "${COSIGN_PASSWORD}" | docker login -u "${COSIGN_DOCKER_USERNAME}" --password-stdin
                             """
 
-                            echo "🔍 Running Trivy scan on ${imageName}"
-                            sh """
-                                docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 0 --severity HIGH,CRITICAL ${imageName}
-                                docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 1 --severity CRITICAL ${imageName}
-                            """
+                            for (service in services) {
+                                def buildContext = (service == "cartservice") ? "src/cartservice/src" : "src/${service}"
+                                def imageName = "${DOCKERHUB_REPO}/${service.toLowerCase()}:latest"
 
-                            sh """
-                                echo "${DOCKERHUB_CREDENTIALS_PSW}" | docker login -u "${DOCKERHUB_CREDENTIALS_USR}" --password-stdin
-                                docker push ${imageName}
-                                docker logout
-                            """
+                                echo "🚀 Building image: ${imageName}"
+                                sh "docker build -t ${imageName} ${buildContext}"
+
+                                echo "🔍 Trivy scan for ${imageName}"
+                                sh """
+                                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 0 --severity HIGH,CRITICAL ${imageName}
+                                    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock aquasec/trivy:latest image --exit-code 1 --severity CRITICAL ${imageName}
+                                """
+
+                                echo "🔏 Signing ${imageName} with Cosign"
+                                sh """
+                                    cosign sign -y --key gcpkms://${COSIGN_KEY} ${imageName}
+                                """
+
+                                echo "🔐 Verifying signature of ${imageName}"
+                                sh """
+                                    cosign verify --key gcpkms://${COSIGN_KEY} ${imageName}
+                                """
+
+                                echo "📦 Pushing signed image: ${imageName}"
+                                sh "docker push ${imageName}"
+                            }
+
+                            // Logout from Docker Hub
+                            sh "docker logout"
                         }
                     }
                 }
