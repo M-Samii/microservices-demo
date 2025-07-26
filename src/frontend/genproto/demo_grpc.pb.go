@@ -1178,3 +1178,4 @@ var AdService_ServiceDesc = grpc.ServiceDesc{
 	Metadata: "demo.proto",
 }
 //qwqw
+//wq
