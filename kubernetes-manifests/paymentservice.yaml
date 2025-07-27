@@ -43,7 +43,8 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: paymentservice
+      #  image: paymentservice
+        image: mahsamii/paymentservice:latest
         ports:
         - containerPort: 50051
         env:

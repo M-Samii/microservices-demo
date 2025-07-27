@@ -42,7 +42,8 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: checkoutservice
+          image: mahsamii/checkoutservice:latest
+          #image: checkoutservice
           ports:
           - containerPort: 5050
           readinessProbe:

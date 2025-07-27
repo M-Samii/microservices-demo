@@ -43,7 +43,9 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: recommendationservice
+
+       # image: recommendationservice
+        image: mahsamii/recommendationservice:latest 
         ports:
         - containerPort: 8080
         readinessProbe:
