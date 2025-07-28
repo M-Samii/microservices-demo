@@ -17,9 +17,10 @@
 # Declare variables to be passed into your templates.
 
 images:
-  repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
+  #repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
+  repository: mahsamii
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: latest
 
 serviceAccounts:
   # Specifies whether service accounts should be created.
@@ -200,9 +201,9 @@ shippingService:
 cartDatabase:
   # Specifies the type of the cartservice's database, could be either redis or spanner.
   type: redis
-  connectionString: "redis-cart:6379"
+  connectionString: "10.80.211.228:6379"
   inClusterRedis:
-    create: true
+    create: false
     name: redis-cart
     # Uses the public redis image from Docker Hub, otherwise will use the images.repository.
     publicRepository: true
