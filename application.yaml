@@ -1,14 +1,56 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: my-app
+#   namespace: argocd
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/M-Samii/microservices-demo.git
+#     targetRevision: HEAD
+#     path: helm-chart/templates
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: default
+#   syncPolicy:
+#     automated: {}
+
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
   namespace: argocd
+  annotations:
+  # Argo CD Image Updater settings
+    argocd-image-updater.argoproj.io/write-back-method: argocd
+    argocd-image-updater.argoproj.io/image-list: |
+      service1=mahsamii/adservice,
+      service2=mahsamii/cartservice,
+      service3=mahsamii/checkoutservice,
+      service4=mahsamii/currencyservice,  
+      service5=mahsamii/emailservice,
+      service6=mahsamii/frontend,
+      service7=mahsamii/loadgenerator,
+      service8=mahsamii/paymentservice,
+      service9=mahsamii/productcatalogservice,
+      service10=mahsamii/recommendationservice,
+      service11=mahsamii/shippingservice
+  
+    argocd-image-updater.argoproj.io/my-image.update-strategy: newest-build
+    argocd-image-updater.argoproj.io/my-image.allow-tags: regexp:^v.*
+    argocd-image-updater.argoproj.io/my-image.helm.image-spec: image.spec
+    #argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds
+    argocd-image-updater.argoproj.io/write-back-target: helmvalues:/my-app/values.yaml
+
 spec:
   project: default
   source:
     repoURL: https://github.com/M-Samii/microservices-demo.git
     targetRevision: HEAD
-    path: kubernetes-manifests
+    path: helm-chart  
+    helm:
+      valueFiles:
+        - values.yaml  
   destination:
     server: https://kubernetes.default.svc
     namespace: default
