@@ -15,44 +15,128 @@
 #   syncPolicy:
 #     automated: {}
 
+##########################################################################
+
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: my-app
+#   namespace: argocd
+#   annotations:
+#   # Argo CD Image Updater settings
+#     argocd-image-updater.argoproj.io/write-back-method: argocd
+#     argocd-image-updater.argoproj.io/service1.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service2.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service3.allow-tags: latest  
+#     argocd-image-updater.argoproj.io/service4.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service5.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service6.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service7.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service8.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service9.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service10.allow-tags: latest
+#     argocd-image-updater.argoproj.io/service11.allow-tags: latest
+    
+
+
+#     argocd-image-updater.argoproj.io/image-list: |
+#       service1=mahsamii/adservice,
+#       service2=mahsamii/cartservice,
+#       service3=mahsamii/checkoutservice,
+#       service4=mahsamii/currencyservice,  
+#       service5=mahsamii/emailservice,
+#       service6=mahsamii/frontend,
+#       service7=mahsamii/loadgenerator,
+#       service8=mahsamii/paymentservice,
+#       service9=mahsamii/productcatalogservice,
+#       service10=mahsamii/recommendationservice,
+#       service11=mahsamii/shippingservice
+#     argocd-image-updater.argoproj.io/service1.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service2.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service3.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service4.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service5.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service6.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service7.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service8.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service9.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service10.update-strategy: digest
+#     argocd-image-updater.argoproj.io/service11.update-strategy: digest
+   
+    
+
+# spec:
+#   project: default
+#   source:
+#     repoURL: https://github.com/M-Samii/microservices-demo.git
+#     targetRevision: HEAD
+#     path: helm-chart  
+#     helm:
+#       valueFiles:
+#         - values.yaml  
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: default
+#   syncPolicy:
+#     automated: {}
+
+
+#################################
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
   name: my-app
   namespace: argocd
   annotations:
-  # Argo CD Image Updater settings
+    # Argo CD Image Updater settings
     argocd-image-updater.argoproj.io/write-back-method: argocd
     argocd-image-updater.argoproj.io/image-list: |
-      service1=mahsamii/adservice,
-      service2=mahsamii/cartservice,
-      service3=mahsamii/checkoutservice,
-      service4=mahsamii/currencyservice,  
-      service5=mahsamii/emailservice,
-      service6=mahsamii/frontend,
-      service7=mahsamii/loadgenerator,
-      service8=mahsamii/paymentservice,
-      service9=mahsamii/productcatalogservice,
-      service10=mahsamii/recommendationservice,
+      service1=mahsamii/adservice
+      service2=mahsamii/cartservice
+      service3=mahsamii/checkoutservice
+      service4=mahsamii/currencyservice
+      service5=mahsamii/emailservice
+      service6=mahsamii/frontend
+      service7=mahsamii/loadgenerator
+      service8=mahsamii/paymentservice
+      service9=mahsamii/productcatalogservice
+      service10=mahsamii/recommendationservice
       service11=mahsamii/shippingservice
-  
-    argocd-image-updater.argoproj.io/my-image.update-strategy: newest-build
-    argocd-image-updater.argoproj.io/my-image.allow-tags: regexp:^v.*
-    argocd-image-updater.argoproj.io/my-image.helm.image-spec: image.spec
-    #argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds
-    argocd-image-updater.argoproj.io/write-back-target: helmvalues:/my-app/values.yaml
-
+    argocd-image-updater.argoproj.io/service1.allow-tags: latest
+    argocd-image-updater.argoproj.io/service1.update-strategy: digest
+    argocd-image-updater.argoproj.io/service2.allow-tags: latest
+    argocd-image-updater.argoproj.io/service2.update-strategy: digest
+    argocd-image-updater.argoproj.io/service3.allow-tags: latest
+    argocd-image-updater.argoproj.io/service3.update-strategy: digest
+    argocd-image-updater.argoproj.io/service4.allow-tags: latest
+    argocd-image-updater.argoproj.io/service4.update-strategy: digest
+    argocd-image-updater.argoproj.io/service5.allow-tags: latest
+    argocd-image-updater.argoproj.io/service5.update-strategy: digest
+    argocd-image-updater.argoproj.io/service6.allow-tags: latest
+    argocd-image-updater.argoproj.io/service6.update-strategy: digest
+    argocd-image-updater.argoproj.io/service7.allow-tags: latest
+    argocd-image-updater.argoproj.io/service7.update-strategy: digest
+    argocd-image-updater.argoproj.io/service8.allow-tags: latest
+    argocd-image-updater.argoproj.io/service8.update-strategy: digest
+    argocd-image-updater.argoproj.io/service9.allow-tags: latest
+    argocd-image-updater.argoproj.io/service9.update-strategy: digest
+    argocd-image-updater.argoproj.io/service10.allow-tags: latest
+    argocd-image-updater.argoproj.io/service10.update-strategy: digest
+    argocd-image-updater.argoproj.io/service11.allow-tags: latest
+    argocd-image-updater.argoproj.io/service11.update-strategy: digest
 spec:
   project: default
   source:
     repoURL: https://github.com/M-Samii/microservices-demo.git
     targetRevision: HEAD
-    path: helm-chart  
+    path: helm-chart
     helm:
       valueFiles:
-        - values.yaml  
+        - values.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: default
   syncPolicy:
-    automated: {}
+    automated:
+      prune: true
+      selfHeal: true
