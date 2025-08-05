@@ -201,7 +201,7 @@ shippingService:
 cartDatabase:
   # Specifies the type of the cartservice's database, could be either redis or spanner.
   type: redis
-  connectionString: "10.95.44.244:6379"
+  connectionString: "10.9.116.172:6379"
   inClusterRedis:
     create: false
     name: redis-cart
