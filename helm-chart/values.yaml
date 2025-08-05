@@ -60,7 +60,23 @@ seccompProfile:
 securityContext:
   enable: true
 
+# adService:
+#   image:
+#     repository: mahsamii/adservice
+#     tag: latest
+#   create: true
+#   name: adservice
+#   resources:
+#     requests:
+#       cpu: 200m
+#       memory: 180Mi
+#     limits:
+#       cpu: 300m
+#       memory: 300Mi
 adService:
+  image:
+    repository: mahsamii/adservice
+    tag: latest
   create: true
   name: adservice
   resources:
@@ -70,6 +86,7 @@ adService:
     limits:
       cpu: 300m
       memory: 300Mi
+      
 
 cartService:
   create: true
