@@ -69,7 +69,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.productCatalogService.image.repository }}{{ if .Values.productCatalogService.image.digest }}@{{ .Values.productCatalogService.image.digest }}{{ else }}:{{ .Values.productCatalogService.image.tag }}{{ end }}
+        image: {{ .Values.productCatalogService.image.name }}{{ if .Values.productCatalogService.image.digest }}@{{ .Values.productCatalogService.image.digest }}{{ else }}:{{ .Values.productCatalogService.image.tag }}{{ end }}
         ports:
         - containerPort: 3550
         env:

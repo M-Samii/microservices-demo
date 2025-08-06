@@ -69,7 +69,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.recommendationService.image.repository }}{{ if .Values.recommendationService.image.digest }}@{{ .Values.recommendationService.image.digest }}{{ else }}:{{ .Values.recommendationService.image.tag }}{{ end }}
+        image: {{ .Values.recommendationService.image.name }}{{ if .Values.recommendationService.image.digest }}@{{ .Values.recommendationService.image.digest }}{{ else }}:{{ .Values.recommendationService.image.tag }}{{ end }}
         ports:
         - containerPort: 8080
         readinessProbe:

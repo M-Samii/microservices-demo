@@ -69,7 +69,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.currencyService.image.repository }}{{ if .Values.currencyService.image.digest }}@{{ .Values.currencyService.image.digest }}{{ else }}:{{ .Values.currencyService.image.tag }}{{ end }}
+        image: {{ .Values.currencyService.image.name }}{{ if .Values.currencyService.image.digest }}@{{ .Values.currencyService.image.digest }}{{ else }}:{{ .Values.currencyService.image.tag }}{{ end }}
         ports:
         - name: grpc
           containerPort: 7000

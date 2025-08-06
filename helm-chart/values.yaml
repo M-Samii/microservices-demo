@@ -18,7 +18,7 @@
 
 images:
   #repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
-  repository: mahsamii
+  name: mahsamii
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
  # digest: "" 
@@ -65,7 +65,7 @@ adService:
   create: true
   name: adservice
   image:
-    repository: mahsamii/adservice
+    name: mahsamii/adservice
     tag: latest
     digest: ""
   resources:
@@ -80,7 +80,7 @@ cartService:
   create: true
   name: cartservice
   image:
-    repository: mahsamii/cartservice
+    name: mahsamii/cartservice
     tag: latest
     digest: ""
   resources:
@@ -95,7 +95,7 @@ checkoutService:
   create: true
   name: checkoutservice
   image:
-    repository: mahsamii/checkoutservice
+    name: mahsamii/checkoutservice
     tag: latest
     digest: ""
   resources:
@@ -110,7 +110,7 @@ currencyService:
   create: true
   name: currencyservice
   image:
-    repository: mahsamii/currencyservice
+    name: mahsamii/currencyservice
     tag: latest
     digest: ""
   resources:
@@ -125,7 +125,7 @@ emailService:
   create: true
   name: emailservice
   image:
-    repository: mahsamii/emailservice
+    name: mahsamii/emailservice
     tag: latest
     digest: ""
   resources:
@@ -140,7 +140,7 @@ frontend:
   create: true
   name: frontend
   image:
-    repository: mahsamii/frontend
+    name: mahsamii/frontend
     tag: latest
     digest: ""
   externalService: true
@@ -169,7 +169,7 @@ loadGenerator:
   create: true
   name: loadgenerator
   image:
-    repository: mahsamii/loadgenerator
+    name: mahsamii/loadgenerator
     tag: latest
     digest: ""
   checkFrontendInitContainer: true
@@ -185,7 +185,7 @@ paymentService:
   create: true
   name: paymentservice
   image:
-    repository: mahsamii/paymentservice
+    name: mahsamii/paymentservice
     tag: latest
     digest: ""
   resources:
@@ -200,7 +200,7 @@ productCatalogService:
   create: true
   name: productcatalogservice
   image:
-    repository: mahsamii/productcatalogservice
+    name: mahsamii/productcatalogservice
     tag: latest
     digest: ""
   # Specifies an extra latency to any request on productcatalogservice, by default no extra latency.
@@ -217,7 +217,7 @@ recommendationService:
   create: true
   name: recommendationservice
   image:
-    repository: mahsamii/recommendationservice
+    name: mahsamii/recommendationservice
     tag: latest
     digest: ""
   resources:
@@ -232,7 +232,7 @@ shippingService:
   create: true
   name: shippingservice
   image:
-    repository: mahsamii/shippingservice
+    name: mahsamii/shippingservice
     tag: latest
     digest: ""
   resources:
