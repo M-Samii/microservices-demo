@@ -73,7 +73,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.cartService.image.repository }}:{{ .Values.cartService.image.tag }}
+        image: {{ .Values.cartService.image.repository }}{{ if .Values.cartService.image.digest }}@{{ .Values.cartService.image.digest }}{{ else }}:{{ .Values.cartService.image.tag }}{{ end }}
         ports:
         - containerPort: 7070
         env:

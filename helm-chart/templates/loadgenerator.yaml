@@ -106,7 +106,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.loadGenerator.image.repository }}:{{ .Values.loadGenerator.image.tag }}
+        image: {{ .Values.loadGenerator.image.repository }}{{ if .Values.loadGenerator.image.digest }}@{{ .Values.loadGenerator.image.digest }}{{ else }}:{{ .Values.loadGenerator.image.tag }}{{ end }}
         env:
         - name: FRONTEND_ADDR
           value: "{{ .Values.frontend.name }}:80"

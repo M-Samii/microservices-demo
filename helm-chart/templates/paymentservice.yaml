@@ -69,7 +69,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.paymentService.image.repository }}:{{ .Values.paymentService.image.tag }}
+        image: {{ .Values.paymentService.image.repository }}{{ if .Values.paymentService.image.digest }}@{{ .Values.paymentService.image.digest }}{{ else }}:{{ .Values.paymentService.image.tag }}{{ end }}
         ports:
         - containerPort: 50051
         env:

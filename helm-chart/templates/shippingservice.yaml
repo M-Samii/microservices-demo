@@ -68,7 +68,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.shippingService.image.repository }}:{{ .Values.shippingService.image.tag }}
+        image: {{ .Values.shippingService.image.repository }}{{ if .Values.shippingService.image.digest }}@{{ .Values.shippingService.image.digest }}{{ else }}:{{ .Values.shippingService.image.tag }}{{ end }}
         ports:
         - containerPort: 50051
         env:

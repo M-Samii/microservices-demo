@@ -69,7 +69,7 @@ spec:
               - ALL
           privileged: false
           readOnlyRootFilesystem: true
-        image: {{ .Values.emailService.image.repository }}:{{ .Values.emailService.image.tag }}
+        image: {{ .Values.emailService.image.repository }}{{ if .Values.emailService.image.digest }}@{{ .Values.emailService.image.digest }}{{ else }}:{{ .Values.emailService.image.tag }}{{ end }}
         ports:
         - containerPort: 8080
         env:

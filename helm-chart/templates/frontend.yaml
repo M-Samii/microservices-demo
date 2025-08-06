@@ -70,7 +70,7 @@ spec:
                 - ALL
             privileged: false
             readOnlyRootFilesystem: true
-          image: {{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}
+          image: {{ .Values.frontend.image.repository }}{{ if .Values.frontend.image.digest }}@{{ .Values.frontend.image.digest }}{{ else }}:{{ .Values.frontend.image.tag }}{{ end }}
           ports:
           - containerPort: 8080
           readinessProbe:

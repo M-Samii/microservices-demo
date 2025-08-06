@@ -67,6 +67,7 @@ adService:
   image:
     repository: mahsamii/adservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 200m
@@ -81,6 +82,7 @@ cartService:
   image:
     repository: mahsamii/cartservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 200m
@@ -95,6 +97,7 @@ checkoutService:
   image:
     repository: mahsamii/checkoutservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 100m
@@ -109,6 +112,7 @@ currencyService:
   image:
     repository: mahsamii/currencyservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 100m
@@ -123,6 +127,7 @@ emailService:
   image:
     repository: mahsamii/emailservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 100m
@@ -137,6 +142,7 @@ frontend:
   image:
     repository: mahsamii/frontend
     tag: latest
+    digest: ""
   externalService: true
   cymbalBranding: false
   # One of: local, gcp, aws, azure, onprem, alibaba. When not set, defaults to "local" unless running in GKE, otherwise auto-sets to gcp.
@@ -165,6 +171,7 @@ loadGenerator:
   image:
     repository: mahsamii/loadgenerator
     tag: latest
+    digest: ""
   checkFrontendInitContainer: true
   resources:
     requests:
@@ -180,6 +187,7 @@ paymentService:
   image:
     repository: mahsamii/paymentservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 100m
@@ -194,6 +202,7 @@ productCatalogService:
   image:
     repository: mahsamii/productcatalogservice
     tag: latest
+    digest: ""
   # Specifies an extra latency to any request on productcatalogservice, by default no extra latency.
   extraLatency: ""
   resources:
@@ -210,6 +219,7 @@ recommendationService:
   image:
     repository: mahsamii/recommendationservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 100m
@@ -224,6 +234,7 @@ shippingService:
   image:
     repository: mahsamii/shippingservice
     tag: latest
+    digest: ""
   resources:
     requests:
       cpu: 100m
