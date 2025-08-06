@@ -64,7 +64,9 @@ securityContext:
 adService:
   create: true
   name: adservice
-  
+  image:
+    repository: mahsamii/adservice
+    tag: latest
   resources:
     requests:
       cpu: 200m
@@ -72,24 +74,13 @@ adService:
     limits:
       cpu: 300m
       memory: 300Mi
-# adService:
-#   image:
-#     repository: mahsamii/adservice
-#     tag: latest
-#   create: true
-#   name: adservice
-#   resources:
-#     requests:
-#       cpu: 200m
-#       memory: 180Mi
-#     limits:
-#       cpu: 300m
-#       memory: 300Mi
-      
 
 cartService:
   create: true
   name: cartservice
+  image:
+    repository: mahsamii/cartservice
+    tag: latest
   resources:
     requests:
       cpu: 200m
@@ -101,6 +92,9 @@ cartService:
 checkoutService:
   create: true
   name: checkoutservice
+  image:
+    repository: mahsamii/checkoutservice
+    tag: latest
   resources:
     requests:
       cpu: 100m
@@ -112,6 +106,9 @@ checkoutService:
 currencyService:
   create: true
   name: currencyservice
+  image:
+    repository: mahsamii/currencyservice
+    tag: latest
   resources:
     requests:
       cpu: 100m
@@ -123,6 +120,9 @@ currencyService:
 emailService:
   create: true
   name: emailservice
+  image:
+    repository: mahsamii/emailservice
+    tag: latest
   resources:
     requests:
       cpu: 100m
@@ -134,6 +134,9 @@ emailService:
 frontend:
   create: true
   name: frontend
+  image:
+    repository: mahsamii/frontend
+    tag: latest
   externalService: true
   cymbalBranding: false
   # One of: local, gcp, aws, azure, onprem, alibaba. When not set, defaults to "local" unless running in GKE, otherwise auto-sets to gcp.
@@ -159,6 +162,9 @@ frontend:
 loadGenerator:
   create: true
   name: loadgenerator
+  image:
+    repository: mahsamii/loadgenerator
+    tag: latest
   checkFrontendInitContainer: true
   resources:
     requests:
@@ -171,6 +177,9 @@ loadGenerator:
 paymentService:
   create: true
   name: paymentservice
+  image:
+    repository: mahsamii/paymentservice
+    tag: latest
   resources:
     requests:
       cpu: 100m
@@ -182,6 +191,9 @@ paymentService:
 productCatalogService:
   create: true
   name: productcatalogservice
+  image:
+    repository: mahsamii/productcatalogservice
+    tag: latest
   # Specifies an extra latency to any request on productcatalogservice, by default no extra latency.
   extraLatency: ""
   resources:
@@ -195,6 +207,9 @@ productCatalogService:
 recommendationService:
   create: true
   name: recommendationservice
+  image:
+    repository: mahsamii/recommendationservice
+    tag: latest
   resources:
     requests:
       cpu: 100m
@@ -206,6 +221,9 @@ recommendationService:
 shippingService:
   create: true
   name: shippingservice
+  image:
+    repository: mahsamii/shippingservice
+    tag: latest
   resources:
     requests:
       cpu: 100m
