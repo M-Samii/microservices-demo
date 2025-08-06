@@ -151,7 +151,7 @@ metadata:
     argocd-image-updater.argoproj.io/write-back-method: argocd
     argocd-image-updater.argoproj.io/image-list: "service1=mahsamii/adservice:latest"
     argocd-image-updater.argoproj.io/service1.update-strategy: digest
-    argocd-image-updater.argoproj.io/service1.helm-image-digest: adService.image.digest
+    argocd-image-updater.argoproj.io/service1.helm.image-digest: adService.image.digest
 
 spec:
   project: default
