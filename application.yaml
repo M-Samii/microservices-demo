@@ -149,57 +149,9 @@ metadata:
   namespace: argocd
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-   
-   
     argocd-image-updater.argoproj.io/image-list: "service1=mahsamii/adservice:latest"
-
-    # argocd-image-updater.argoproj.io/image-list: |
-    #   service1=mahsamii/adservice
-    #   service2=mahsamii/cartservice
-    #   service3=mahsamii/checkoutservice
-    #   service4=mahsamii/currencyservice
-    #   service5=mahsamii/emailservice
-    #   service6=mahsamii/frontend
-    #   service7=mahsamii/loadgenerator
-    #   service8=mahsamii/paymentservice
-    #   service9=mahsamii/productcatalogservice
-    #   service10=mahsamii/recommendationservice
-    #   service11=mahsamii/shippingservice
-   
     argocd-image-updater.argoproj.io/service1.update-strategy: digest
-    #argocd-image-updater.argoproj.io/service1.allow-tags: ^latest$
-   # argocd-image-updater.argoproj.io/service1.helm-image-name: adService.name
     argocd-image-updater.argoproj.io/service1.helm-values: images.repository,images.tag,images.digest
-    # argocd-image-updater.argoproj.io/service2.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service2.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service2.helm-image-name: cartService.name 
-    # argocd-image-updater.argoproj.io/service3.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service3.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service3.helm-image-name: checkoutService.name 
-    # argocd-image-updater.argoproj.io/service4.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service4.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service4.helm-image-name: currencyService.name
-    # argocd-image-updater.argoproj.io/service5.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service5.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service5.helm-image-name: emailService.name
-    # argocd-image-updater.argoproj.io/service6.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service6.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service6.helm-image-name: frontend.name
-    # argocd-image-updater.argoproj.io/service7.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service7.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service7.helm-image-name: loadGenerator.name
-    # argocd-image-updater.argoproj.io/service8.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service8.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service8.helm-image-name: paymentService.name
-    # argocd-image-updater.argoproj.io/service9.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service9.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service9.helm-image-name: productCatalogService.name
-    # argocd-image-updater.argoproj.io/service10.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service10.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service10.helm-image-name: recommendationService.name
-    # argocd-image-updater.argoproj.io/service11.allow-tags: latest
-    # argocd-image-updater.argoproj.io/service11.update-strategy: digest
-    # argocd-image-updater.argoproj.io/service11.helm-image-name: shippingService.name
 spec:
   project: default
   source:
@@ -215,7 +167,19 @@ spec:
   syncPolicy:
     automated:
       prune: true
-      selfHeal: true
+      selfHeal: true 
+    # syncOptions:
+    #   - ResourceHooks=true 
+    #   - Validate=true
+    #   - CreateNamespace=true
+    #   - PruneLast=true
+    #   - ApplyOutOfSyncOnly=true
+    #   - Replace=true
+    #   - SkipDryRunOnMissingResource=true
+    #   - EnableAlphaFeatures=true
+
+
+
 ##############################################################
 
 
