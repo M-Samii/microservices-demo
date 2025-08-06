@@ -21,7 +21,7 @@ images:
   repository: mahsamii
   # Overrides the image tag whose default is the chart appVersion.
   tag: latest
-  digest: "" 
+ # digest: "" 
 
 serviceAccounts:
   # Specifies whether service accounts should be created.
