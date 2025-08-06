@@ -151,7 +151,7 @@ metadata:
     argocd-image-updater.argoproj.io/write-back-method: argocd
    
    
-    argocd-image-updater.argoproj.io/image-list: "service1=mahsamii/adservice"
+    argocd-image-updater.argoproj.io/image-list: "service1=mahsamii/adservice:latest"
 
     # argocd-image-updater.argoproj.io/image-list: |
     #   service1=mahsamii/adservice
@@ -165,8 +165,9 @@ metadata:
     #   service9=mahsamii/productcatalogservice
     #   service10=mahsamii/recommendationservice
     #   service11=mahsamii/shippingservice
-    argocd-image-updater.argoproj.io/service1.allow-tags: latest
+   
     argocd-image-updater.argoproj.io/service1.update-strategy: digest
+    #argocd-image-updater.argoproj.io/service1.allow-tags: ^latest$
    # argocd-image-updater.argoproj.io/service1.helm-image-name: adService.name
     argocd-image-updater.argoproj.io/service1.helm-values: images.repository,images.tag,images.digest
     # argocd-image-updater.argoproj.io/service2.allow-tags: latest
