@@ -16,12 +16,12 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# images:
-#   #repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
-#   name: mahsamii
-#   # Overrides the image tag whose default is the chart appVersion.
-#   tag: latest
-#  # digest: "" 
+images:
+  #repository: us-central1-docker.pkg.dev/google-samples/microservices-demo
+  name: mahsamii
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+ # digest: "" 
 
 serviceAccounts:
   # Specifies whether service accounts should be created.
@@ -66,7 +66,7 @@ adService:
   name: adservice
   image:
     name: mahsamii/adservice
-    tag: latest
+    tag: 1.0.1
     digest: ""
   resources:
     requests:
