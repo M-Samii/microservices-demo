@@ -244,3 +244,6 @@ cartDatabase:
 shoppingAssistantService:
   create: false
   name: shoppingassistantservice
+adservice:
+  image:
+    tag: 28a3a2be
