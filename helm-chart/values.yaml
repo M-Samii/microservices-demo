@@ -58,7 +58,7 @@ adService:
   name: adservice
   image:
     name: mahsamii/adservice
-    tag: latest
+    tag: 7ee1b32f
     digest: ""
   resources:
     requests:
