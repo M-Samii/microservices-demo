@@ -147,13 +147,13 @@ kind: Application
 metadata:
   name: my-app
   namespace: argocd
-  annotations:
-    argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: "service1=mahsamii/adservice:latest"
-    argocd-image-updater.argoproj.io/service1.update-strategy: digest
-    argocd-image-updater.argoproj.io/service1.helm.image-name: adService.image.name
-    argocd-image-updater.argoproj.io/service1.helm.tag-name: adService.image.tag
-    argocd-image-updater.argoproj.io/service1.force-update: "true"
+#  annotations:
+#    argocd-image-updater.argoproj.io/write-back-method: argocd
+#    argocd-image-updater.argoproj.io/image-list: "service1=mahsamii/adservice:latest"
+#    argocd-image-updater.argoproj.io/service1.update-strategy: digest
+#    argocd-image-updater.argoproj.io/service1.helm.image-name: adService.image.name
+#    argocd-image-updater.argoproj.io/service1.helm.tag-name: adService.image.tag
+#    argocd-image-updater.argoproj.io/service1.force-update: "true"
 spec:
   project: default
   source:
