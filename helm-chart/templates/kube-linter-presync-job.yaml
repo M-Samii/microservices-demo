@@ -34,7 +34,7 @@ spec:
               mountPath: /work
       containers:
         - name: kube-linter
-          image: ghcr.io/stackrox/kube-linter:v0.6.8
+          image: stackrox/kube-linter:latest
           command: ["kube-linter"]
           args:
             - lint
