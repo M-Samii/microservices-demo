@@ -1,0 +1,13 @@
+controller:
+  metrics: 
+     enabled: true
+     serviceMonitor:
+        enabled: true
+        additionalLabels:
+          release: monitoring
+
+
+#helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+#helm repo update
+#helm upgrade --install ingress-controller ingress-nginx/ingress-nginx -f ~/microservices-demo/kubernetes-manifests/ingress-values.yaml
+

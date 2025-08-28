@@ -1,12 +1,18 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: kube-linter-config
-  namespace: default
-data:
-  config.yaml: |
-    checks:
-      include:
-        - no-privileged-containers
-        - no-readiness-probe
-        - no-liveness-probe
+
+# apiVersion: v1
+# kind: ConfigMap
+# metadata:
+#   name: kube-linter-config
+#   namespace: default
+# data:
+#   config.yaml: |
+#     checks:
+#       include:
+#         - privileged-container
+#         - run-as-non-root
+#         - drop-net-raw-capability
+#         - unset-cpu-requirements
+#         - unset-memory-requirements
+#     # You can also exclude checks if needed
+#     # exclude:
+#     #   - no-read-only-root-fs
