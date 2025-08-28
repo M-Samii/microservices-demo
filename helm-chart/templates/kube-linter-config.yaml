@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kube-linter-config
+  namespace: default
+data:
+  config.yaml: |
+    checks:
+      include:
+        - no-privileged-containers
+        - no-readiness-probe
+        - no-liveness-probe

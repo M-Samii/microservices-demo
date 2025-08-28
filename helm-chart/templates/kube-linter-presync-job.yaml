@@ -1,0 +1,56 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: kube-linter-presync
+  namespace: default
+  annotations:
+    # Run before Helm resources are applied
+    argocd.argoproj.io/hook: PreSync
+    # Clean up on next run and when succeeded (keep failed jobs for debugging)
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      volumes:
+        - name: work
+          emptyDir: {}
+        - name: kube-linter-config
+          configMap:
+            name: kube-linter-config
+      # 1) Render the Helm chart to YAML
+      initContainers:
+        - name: fetch-and-render
+          image: alpine/helm:3.14.2
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -eu
+              apk add --no-cache git
+              echo ">>> Cloning repo..."
+              git clone --depth 1 https://github.com/M-Samii/microservices-demo.git /work/src
+              cd /work/src/helm-chart
+              echo ">>> Building deps (if any)..."
+              helm dependency build || true
+              echo ">>> Rendering Helm..."
+              helm template my-app . -f values.yaml > /work/rendered.yaml
+              echo "Rendered manifests -> /work/rendered.yaml"
+          volumeMounts:
+            - name: work
+              mountPath: /work
+      # 2) Lint the rendered YAML
+      containers:
+        - name: kube-linter
+          image: stackrox/kube-linter:v0.6.8
+          command: ["/bin/sh","-c"]
+          args:
+            - |
+              set -eu
+              echo ">>> Running kube-linter..."
+              kube-linter lint /work/rendered.yaml --config /config/config.yaml
+          volumeMounts:
+            - name: work
+              mountPath: /work
+            - name: kube-linter-config
+              mountPath: /config
