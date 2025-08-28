@@ -34,9 +34,13 @@ spec:
               mountPath: /work
       containers:
         - name: kube-linter
-          image: stackrox/kube-linter:v0.6.8
+          image: ghcr.io/stackrox/kube-linter:v0.6.8
           command: ["kube-linter"]
-          args: ["lint", "/work/rendered.yaml", "--config", "/config/config.yaml"]
+          args:
+            - lint
+            - /work/rendered.yaml
+            - --config
+            - /config/config.yaml
           volumeMounts:
             - name: work
               mountPath: /work
