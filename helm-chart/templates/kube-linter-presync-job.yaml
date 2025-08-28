@@ -36,7 +36,7 @@ spec:
       containers:
         - name: kube-linter
           image: stackrox/kube-linter:latest
-          command: ["kube-linter"]
+
           args:
             - lint
             - /work/rendered.yaml
