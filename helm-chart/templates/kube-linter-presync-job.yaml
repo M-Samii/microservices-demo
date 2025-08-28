@@ -2,11 +2,11 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: kube-linter-presync
-  namespace: default
+  namespace: argocd
   annotations:
     # Run before Helm resources are applied
     argocd.argoproj.io/hook: PreSync
-    # Clean up on next run and when succeeded (keep failed jobs for debugging)
+    # Clean up old jobs before creating a new one, and delete succeeded jobs
     argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
 spec:
   backoffLimit: 0
@@ -19,7 +19,6 @@ spec:
         - name: kube-linter-config
           configMap:
             name: kube-linter-config
-      # 1) Render the Helm chart to YAML
       initContainers:
         - name: fetch-and-render
           image: alpine/helm:3.14.2
@@ -39,7 +38,6 @@ spec:
           volumeMounts:
             - name: work
               mountPath: /work
-      # 2) Lint the rendered YAML
       containers:
         - name: kube-linter
           image: stackrox/kube-linter:v0.6.8

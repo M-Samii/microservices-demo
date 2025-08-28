@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: kube-linter-config
-  namespace: default
+  namespace: argocd
 data:
   config.yaml: |
     checks:
