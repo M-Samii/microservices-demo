@@ -27,6 +27,7 @@ spec:
               apk add --no-cache git
               git clone --depth 1 https://github.com/M-Samii/microservices-demo.git /work/src
               cd /work/src/helm-chart
+              ls
               helm dependency build || true
               helm template my-app . -f values.yaml > /work/rendered.yaml
           volumeMounts:
